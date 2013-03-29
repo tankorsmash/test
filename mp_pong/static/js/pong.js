@@ -108,6 +108,8 @@ function Game() {
     function scorePoint(plr, points) {
         // alert('score!');
         setBallCoords(ball, 200, 200);
+
+        player_score[plr] += 1;
     }
 
     function validateCoord(coord, x_or_y) {
@@ -256,12 +258,18 @@ function Game() {
         key_translation = {'up' : -20,
                            'down' : 20};
 
+        //scoring
+        player_score = {player1 : 0,
+                        player2 : 0};
+
         setTimeout(function () { Update() }, 50);
 
         console.log('done start');
 
         //associates the function KeyHandler with keypresses
-        $("#pong_game").ready(function(){$(this).keypress(KeyHandler);});
+        $("#pong_game").ready(function(){
+            $("#pong_game").keypress(KeyHandler);
+        });
     }
 
     Start()
