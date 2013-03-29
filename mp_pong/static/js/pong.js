@@ -14,10 +14,10 @@ function Game(){
         plr.css('top', y);
     };
 
-    function moveBall(ball, offset_x, offset_y){
+    function moveElem(elem, offset_x, offset_y){
 
-        current_x = getElemCoord(ball, 'x');
-        current_y = getElemCoord(ball, 'y');
+        current_x = getElemCoord(elem, 'x');
+        current_y = getElemCoord(elem, 'y');
         new_x = offset_x + current_x;
         new_y = offset_y + current_y;
 
@@ -25,20 +25,24 @@ function Game(){
             //someone scored
             alert('scored');
             if (coord < 0){
-                scorePoint(player1, 1);}
+                scorePoint(player1, 1);
+                // hitLimit(elem, 'x');}
+                }
+                
             else {
                 scorePoint(player2, 1);
+                // hitLimit(elem, 'x');
             }
         }
         else if (validateCoord(new_y, 'y') != true){
-            //ball hit wall, reverse x direction
+            //ball hit wall, reverse vertical direction
             console.log('hit wall');
-            offset_y *= -2;
+
+            offset_y *= -1;
             reverse_y = true;
             new_y = current_y + offset_y;
-
             setBallCoords(ball, new_x, new_y);
-            return false;
+
         }
 
         else {
@@ -46,7 +50,13 @@ function Game(){
         }
     };
 
-    function scorePoint(plr, amount){
+    // function hitLimit(elem, x_or_y){
+
+    //     if (elem === ball){
+
+    // }
+
+    function scorePoint(plr, points){
         alert('score!');
     }
 
@@ -99,7 +109,7 @@ function Game(){
         movePlayer(player1, 5);
 
 
-        moveBall(ball, x_offset, y_offset);
+        moveElem(ball, x_offset, y_offset);
         if (reverse_y == true){
             y_offset *= -1;
             reverse_y = false;
