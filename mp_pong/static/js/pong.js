@@ -32,7 +32,7 @@ function Game() {
         //check the element against the play area boundaries
         if (validateCoord(new_left_x, 'x') != true || validateCoord(new_right_x, 'x') != true) {
             //someone scored
-            alert('scored');
+            // alert('scored');
             if (coord < 0) {
                 scorePoint(player1, 1);
             }
@@ -57,13 +57,26 @@ function Game() {
             //player1 paddle right side
 
             //if between player1's height
+            // make sure the new_left_x, the balls.css(left) value is both
+            // within the x and y axes. It adjusts the size of the bounding box
+            // to allow for only portions of the ball to get hit by the paddle
             if(( (new_left_x  < getElemCoord(player1,'x','b')) &&
                         new_top_y < getElemCoord(player1, 'y', 'b') &&
                         new_top_y > (getElemCoord(player1, 'y', 'b') - parseInt(ball.css('height')))) ||
                     (new_left_x < getElemCoord(player1, 'x', 'b') &&
                      new_bot_y > getElemCoord(player1, 'y', 'a') && 
                      (new_bot_y < getElemCoord(player1, 'y', 'a') + parseInt(ball.css('height'))))){
-                alert('bounce off player1');
+                // alert('bounce off player1');
+                reverse_x = true;
+                setBallCoords(ball, new_left_x, new_top_y);
+            }
+            else if(( (new_right_x  > getElemCoord(player2,'x','a')) &&
+                        new_top_y < getElemCoord(player2, 'y', 'b') &&
+                        new_top_y > (getElemCoord(player2, 'y', 'b') - parseInt(ball.css('height')))) ||
+                    (new_right_x > getElemCoord(player2, 'x', 'a') &&
+                     new_bot_y > getElemCoord(player2, 'y', 'a') && 
+                     (new_bot_y < getElemCoord(player2, 'y', 'a') + parseInt(ball.css('height'))))){
+                // alert('bounce off player2');
                 reverse_x = true;
                 setBallCoords(ball, new_left_x, new_top_y);
             }
@@ -83,7 +96,7 @@ function Game() {
 
 
     function scorePoint(plr, points) {
-        alert('score!');
+        // alert('score!');
         setBallCoords(ball, 200, 200);
     }
 
@@ -94,7 +107,7 @@ function Game() {
             console.log(coord);
             console.log(limit_x);
             if (coord < 0 || coord > limit_x) {
-                alert('x false');
+                // alert('x false');
                 return false;
             }
             // else {
@@ -165,7 +178,7 @@ function Game() {
             reverse_x = false;
         }
 
-        setTimeout(function () { Update() }, 3);
+        setTimeout(function () { Update() }, 16);
     };
 
     function Start() {
@@ -174,7 +187,7 @@ function Game() {
         player2 = $($('.player2')[0]);
 
         ball = $($('.ball')[0]);
-        x_offset = -1;
+        x_offset = 1;
         y_offset = 5;
 
         limit_x = parseInt($($('.play_area')[0]).css('width'));
@@ -183,7 +196,7 @@ function Game() {
         reverse_x = false;
         reverse_y = false;
 
-        movePlayer(player1, 5);
+        // movePlayer(player1, 5);
 
         setTimeout(function () { Update() }, 50);
 
