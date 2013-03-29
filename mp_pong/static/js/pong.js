@@ -55,27 +55,24 @@ function Game() {
         //against paddles
         else if (elem === ball){
             //player1 paddle right side
-            if (new_left_x  < getElemCoord(player1,'x','b') || 
-                    new_right_x > getElemCoord(player2, 'x', 'a')){
 
-                //if between player1's height
-                if((new_top_y < getElemCoord(player1, 'y', 'b') && new_top_y > getElemCoord(player1, 'y', 'b') - parseInt(ball.css('height'))) ||
-                        (new_bot_y > getElemCoord(player2, 'y', 'a') && (new_bot_y < getElemCoord(player1, 'y', 'a') + parseInt(ball.css('height'))))){
-                    alert('bounce off player1');
-                    reverse_x = true;
-                    setBallCoords(ball, new_left_x, new_top_y);
-                }
-
-                else{
-                    alert('else');
-                    setBallCoords(ball, new_left_x, new_top_y);
-                }
-
+            //if between player1's height
+            if(( (new_left_x  < getElemCoord(player1,'x','b')) &&
+                        new_top_y < getElemCoord(player1, 'y', 'b') &&
+                        new_top_y > (getElemCoord(player1, 'y', 'b') - parseInt(ball.css('height')))) ||
+                    (new_left_x < getElemCoord(player1, 'x', 'b') &&
+                     new_bot_y > getElemCoord(player1, 'y', 'a') && 
+                     (new_bot_y < getElemCoord(player1, 'y', 'a') + parseInt(ball.css('height'))))){
+                alert('bounce off player1');
+                reverse_x = true;
+                setBallCoords(ball, new_left_x, new_top_y);
             }
+
             else{
                 // alert('else');
                 setBallCoords(ball, new_left_x, new_top_y);
             }
+
         }
 
         else {
