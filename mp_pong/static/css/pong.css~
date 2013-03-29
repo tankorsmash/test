@@ -1,0 +1,38 @@
+
+div.pong_game{
+
+
+    margin-left:25%;
+    margin-right:25%;
+}
+
+div.play_area{
+    position:relative;
+
+    background:black;
+    width:800px;
+    height:600px;
+}
+
+div.player1{
+    background-color:white;
+    height:100px;
+    width:25px;
+    left:5px;
+
+    position:absolute;
+}
+
+div.player2{
+    background-color:white;
+    height:100px;
+    width:25px;
+    left:770px;
+
+    position:absolute;
+}
+
+
+div.ball{
+}
+

@@ -1,0 +1,20 @@
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static user_css %}" type="text/css" />
+<script type="text/javascript" src="{% static jquery %} "></script>
+
+
+<h1>Are you ready to Pong? </h1>
+
+{% if start %}
+HAHAA BUSINESS
+{% endif %}
+
+
+<div class='pong_game'>
+    <div class='play_area'>
+        <div class='score'></div>
+        <div class='player1'></div>
+        <div class='player2'></div>
+        <div class='ball'></div>
+    </div>
+</div>
