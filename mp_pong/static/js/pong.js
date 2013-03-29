@@ -27,6 +27,9 @@ function Game() {
         new_bot_y = offset_y + current_bot_y;
 
 
+
+
+        //check the element against the play area boundaries
         if (validateCoord(new_left_x, 'x') != true || validateCoord(new_right_x, 'x') != true) {
             //someone scored
             alert('scored');
@@ -42,11 +45,35 @@ function Game() {
             //ball hit wall, reverse vertical direction
             console.log('hit wall');
 
-            offset_y *= -1;
             reverse_y = true;
-            new_top_y = current_top_y + offset_y;
+            // new_top_y = current_top_y + offset_y;
             setBallCoords(ball, new_left_x, new_top_y);
 
+        }
+
+        //since the balls still in a valid area, check to see if its bounced
+        //against paddles
+        else if (elem === ball){
+            //player1 paddle right side
+            if (new_left_x  < getElemCoord(player1,'x','b')){
+
+                //if between player1's height
+                if(new_top_y < getElemCoord(player1, 'y', 'b')){
+                    alert('bounce off player1');
+                    reverse_x = true;
+                    setBallCoords(ball, new_left_x, new_top_y);
+                }
+
+                else{
+                    alert('else');
+                    setBallCoords(ball, new_left_x, new_top_y);
+                }
+
+            }
+            else{
+                // alert('else');
+                setBallCoords(ball, new_left_x, new_top_y);
+            }
         }
 
         else {
@@ -138,7 +165,7 @@ function Game() {
             reverse_x = false;
         }
 
-        setTimeout(function () { Update() }, 16);
+        setTimeout(function () { Update() }, 8);
     };
 
     function Start() {
@@ -147,7 +174,7 @@ function Game() {
         player2 = $($('.player2')[0]);
 
         ball = $($('.ball')[0]);
-        x_offset = 1;
+        x_offset = -1;
         y_offset = 5;
 
         limit_x = parseInt($($('.play_area')[0]).css('width'));
