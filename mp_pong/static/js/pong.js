@@ -3,16 +3,10 @@ function Game(){
 
     function movePlayer(plr, offset){
 
-        current_y = getPlayerY(plr);
+        current_y = getElemCoord(plr, 'y');
         new_y = current_y + offset;
         setPlayerY(plr, new_y);
 
-    };
-
-    function getPlayerY(plr){
-
-        y_px = parseInt(plr.css('top'));
-        return y_px;
     };
 
     function setPlayerY(plr, y){
@@ -20,30 +14,32 @@ function Game(){
         plr.css('top', y);
     };
 
-
     function moveBall(ball, offset_x, offset_y){
 
-        current_x , current_y = getBallLoc(ball);
+        current_x = getElemCoord(ball, 'x');
+        current_y = getElemCoord(ball, 'y');
         new_x = offset_x + current_x;
         new_y = offset_y + current_y;
 
-        setBall(ball, new_x, new_y);
+        setBallCoords(ball, new_x, new_y);
     };
 
-    function getBallLoc(ball){
-
-        x = parseInt(ball.css('left'));
-        y = parseInt(ball.css('top'));
-
-        return x,y;
-    };
-
-
-    function setBall(ball, x, y){
+    function setBallCoords(ball, x, y){
 
         ball.css('top',y);
         ball.css('left',x);
 
+    };
+
+    function getElemCoord(elem, x_or_y){
+
+        if (x_or_y == "y"){
+            coord = parseInt(elem.css('top'));
+        }
+        else {
+            coord = parseInt(elem.css('left'));
+        }
+        return coord;
     };
 
     function Update(){
