@@ -39,20 +39,39 @@
 
     position:absolute;
 
-    left:47%;
-    top:45%;
+    left:50%;
+    top:46%;
+}
+
+.score_p1{
+    position:absolute;
+
+    color:white;
+
+    top:25px;
+    left: 100px;
+
+}
+
+.score_p2{
+    position:absolute;
+
+    color:white;
+
+    top:25px;
+    right: 100px;
 }
 
 .divider{
 
     top:2%;
 
-    background-color:white;
-    border-style:solid;
+    border-color:white;
+    border-style:dotted;
+    border-width:4px;
     position:absolute;
-    width:5px;
+    width:0px;
     height:95%;
-
-    margin-left:50%;
+    margin-left:51%;
 
 

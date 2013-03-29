@@ -31,12 +31,13 @@ function Game() {
         if (validateCoord(new_left_x, 'x') != true || validateCoord(new_right_x, 'x') != true) {
             //someone scored
             // alert('scored');
-            if (coord < 0) {
-                scorePoint(player1, 1);
+            if (new_left_x < 0) {
+                scorePoint(player2, 1);
+                // alert('p1 score');
             }
 
             else {
-                scorePoint(player2, 1);
+                scorePoint(player1, 1);
             }
         }
         else if (validateCoord(new_top_y, 'y') != true || validateCoord(new_bot_y, 'y') != true) {
@@ -106,10 +107,18 @@ function Game() {
 
 
     function scorePoint(plr, points) {
-        // alert('score!');
-        setBallCoords(ball, 200, 200);
 
-        player_score[plr] += 1;
+        // reset the ball to the middle of the table
+        setBallCoords(ball, limit_x /2, limit_y /2);
+
+        // console.log(plr);
+        // gets the class of the plr object, expecting player1 or player2
+        player = plr.get()[0].className
+        player_score[player] += 1;
+
+        //flip the ball's direction around so the scorer doesn't have the
+        //advantage
+        reverse_x = true;
     }
 
     function validateCoord(coord, x_or_y) {
@@ -196,6 +205,10 @@ function Game() {
             reverse_x = false;
         }
 
+        //update scores
+        score_p1.text(player_score.player1);
+        score_p2.text(player_score.player2);
+
         setTimeout(function () { Update() }, 16);
     };
 
@@ -235,10 +248,13 @@ function Game() {
 
         ball = $($('.ball')[0]);
 
+        score_p1 = $($('.score_p1')[0]);
+        score_p2 = $($('.score_p2')[0]);
+
         //game speed, avoid setting higher than 2
         game_speed = 2;
         x_offset = -3;
-        y_offset = 0;
+        y_offset = 2;
 
         //size of the play_area 
         limit_x = parseInt($($('.play_area')[0]).css('width'));
@@ -258,9 +274,9 @@ function Game() {
         key_translation = {'up' : -20,
                            'down' : 20};
 
-        //scoring
-        player_score = {player1 : 0,
-                        player2 : 0};
+        //scoring record
+        player_score = {'player1' : 0,
+                        'player2' : 0};
 
         setTimeout(function () { Update() }, 50);
 
