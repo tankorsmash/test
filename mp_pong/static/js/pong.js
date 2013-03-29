@@ -27,8 +27,6 @@ function Game() {
         new_bot_y = offset_y + current_bot_y;
 
 
-
-
         //check the element against the play area boundaries
         if (validateCoord(new_left_x, 'x') != true || validateCoord(new_right_x, 'x') != true) {
             //someone scored
@@ -43,7 +41,7 @@ function Game() {
         }
         else if (validateCoord(new_top_y, 'y') != true || validateCoord(new_bot_y, 'y') != true) {
             //ball hit wall, reverse vertical direction
-            console.log('hit wall');
+            // console.log('hit wall');
 
             reverse_y = true;
             // new_top_y = current_top_y + offset_y;
@@ -104,8 +102,8 @@ function Game() {
 
         if (x_or_y === 'x') {
             // alert('x testing');
-            console.log(coord);
-            console.log(limit_x);
+            // console.log(coord);
+            // console.log(limit_x);
             if (coord < 0 || coord > limit_x) {
                 // alert('x false');
                 return false;
@@ -114,10 +112,10 @@ function Game() {
             //     return true;}
         }
         else if (x_or_y === 'y') {
-            console.log(coord);
-            console.log(limit_y);
+            // console.log(coord);
+            // console.log(limit_y);
             if (coord < 0 || coord > limit_y) {
-                console.log('y false');
+                // console.log('y false');
                 return false;
             }
             // else {
@@ -146,7 +144,7 @@ function Game() {
             //get bottom side coord
             else {
                 coord += parseInt(elem.css('height'));
-                console.log('height' + coord);
+                // console.log('height' + coord);
             }
         }
         else {
@@ -168,7 +166,7 @@ function Game() {
         // movePlayer(player1, 5);
 
 
-        moveElem(ball, x_offset, y_offset);
+        moveElem(ball, x_offset * game_speed, y_offset * game_speed);
         if (reverse_y === true) {
             y_offset *= -1;
             reverse_y = false;
@@ -181,28 +179,56 @@ function Game() {
         setTimeout(function () { Update() }, 16);
     };
 
+    function KeyHandler(e){
+        if (e.keyCode === 119){
+            // alert('w');
+            current_y = getElemCoord(player1, 'y', 'a');
+            setPlayerY(player1, current_y + 20);
+        }
+        else {
+            alert("ASD");
+        }
+    };
+
     function Start() {
 
+        // console.log($(this));
+
+        //represents the player objects 
+        //TODO: insert via jquery.after() instead of hardcode
         player1 = $($('.player1')[0]);
         player2 = $($('.player2')[0]);
 
         ball = $($('.ball')[0]);
+
+        //game speed, avoid setting higher than 2
+        game_speed = 2;
         x_offset = 1;
         y_offset = 5;
 
+        //size of the play_area 
         limit_x = parseInt($($('.play_area')[0]).css('width'));
         limit_y = parseInt($($('.play_area')[0]).css('height'));
 
         reverse_x = false;
         reverse_y = false;
 
-        // movePlayer(player1, 5);
+
+        //controls
+        player1_keys = { 'up' : 119, //w
+            'down' : 115}; //s
+
+        player2_keys = { 'up' : 56, //KP_8
+            'down': 53}; //KP_5
+
+
 
         setTimeout(function () { Update() }, 50);
 
         console.log('done start');
-        console.log($(this));
 
+        //associates the function KeyHandler with keypresses
+        $("#pong_game").ready(function(){$(this).keypress(KeyHandler);});
     }
 
     Start()
