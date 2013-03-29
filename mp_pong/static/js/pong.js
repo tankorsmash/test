@@ -60,10 +60,10 @@ function Game() {
             // to allow for only portions of the ball to get hit by the paddle
             if(( (new_left_x  < getElemCoord(player1,'x','b')) &&
                         new_top_y < getElemCoord(player1, 'y', 'b') &&
-                        new_top_y > (getElemCoord(player1, 'y', 'b') - parseInt(ball.css('height')))) ||
+                        new_top_y > (getElemCoord(player1, 'y', 'a') - parseInt(ball.css('height')))) ||
                     (new_left_x < getElemCoord(player1, 'x', 'b') &&
                      new_bot_y > getElemCoord(player1, 'y', 'a') && 
-                     (new_bot_y > getElemCoord(player1, 'y', 'a') + parseInt(ball.css('height'))))){
+                     (new_bot_y < getElemCoord(player1, 'y', 'a') + parseInt(ball.css('height'))))){
                 // alert('bounce off player1');
                 reverse_x = true;
                 setBallCoords(ball, new_left_x, new_top_y);
@@ -219,7 +219,7 @@ function Game() {
 
         //game speed, avoid setting higher than 2
         game_speed = 2;
-        x_offset = 3;
+        x_offset = -3;
         y_offset = 0;
 
         //size of the play_area 
