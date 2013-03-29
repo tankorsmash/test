@@ -58,9 +58,17 @@ function Game() {
             // make sure the new_left_x, the balls.css(left) value is both
             // within the x and y axes. It adjusts the size of the bounding box
             // to allow for only portions of the ball to get hit by the paddle
+
+                    //check leftmost point is further than the paddles rightmost point
             if(( (new_left_x  < getElemCoord(player1,'x','b')) &&
+                        //topmost point of the ball is less than the paddle's bottom point
                         new_top_y < getElemCoord(player1, 'y', 'b') &&
+                        //topmost point of the ball is greater than the paddle's
+                        //top, plus a little leeway for overlap in case of
+                        //incomplete collision
                         new_top_y > (getElemCoord(player1, 'y', 'a') - parseInt(ball.css('height')))) ||
+                    //do all the equivalent checks for the bottom of the paddle
+                    //instead of the top of the paddle
                     (new_left_x < getElemCoord(player1, 'x', 'b') &&
                      new_bot_y > getElemCoord(player1, 'y', 'a') && 
                      (new_bot_y < getElemCoord(player1, 'y', 'a') + parseInt(ball.css('height'))))){
@@ -68,6 +76,8 @@ function Game() {
                 reverse_x = true;
                 setBallCoords(ball, new_left_x, new_top_y);
             }
+            //TODO remove this a loop over the two players instead of repeating
+            //myself
             else if(( new_right_x  > getElemCoord(player2,'x','a') &&
                         new_top_y < getElemCoord(player2, 'y', 'b') &&
                         new_top_y > (getElemCoord(player2, 'y', 'a') - parseInt(ball.css('height')))
@@ -135,6 +145,12 @@ function Game() {
 
     };
 
+    //returns a single point out of the four following points:
+    // leftmost, topmost, bottommost, rightmost, which looks a little like:
+    //      ya
+    //   xa    xb
+    //      yb     
+    // where 'y' is the x_or_a arg and 'a' is the a_or_b arg
     function getElemCoord(elem, x_or_y, a_or_b) {
 
         if (x_or_y === "y") {
