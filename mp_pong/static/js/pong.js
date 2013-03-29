@@ -63,17 +63,19 @@ function Game() {
                         new_top_y > (getElemCoord(player1, 'y', 'b') - parseInt(ball.css('height')))) ||
                     (new_left_x < getElemCoord(player1, 'x', 'b') &&
                      new_bot_y > getElemCoord(player1, 'y', 'a') && 
-                     (new_bot_y < getElemCoord(player1, 'y', 'a') + parseInt(ball.css('height'))))){
+                     (new_bot_y > getElemCoord(player1, 'y', 'a') + parseInt(ball.css('height'))))){
                 // alert('bounce off player1');
                 reverse_x = true;
                 setBallCoords(ball, new_left_x, new_top_y);
             }
-            else if(( (new_right_x  > getElemCoord(player2,'x','a')) &&
+            else if(( new_right_x  > getElemCoord(player2,'x','a') &&
                         new_top_y < getElemCoord(player2, 'y', 'b') &&
-                        new_top_y > (getElemCoord(player2, 'y', 'b') - parseInt(ball.css('height')))) ||
+                        new_top_y > (getElemCoord(player2, 'y', 'a') - parseInt(ball.css('height')))
+                    ) ||
                     (new_right_x > getElemCoord(player2, 'x', 'a') &&
                      new_bot_y > getElemCoord(player2, 'y', 'a') && 
-                     (new_bot_y < getElemCoord(player2, 'y', 'a') + parseInt(ball.css('height'))))){
+                     (new_bot_y < getElemCoord(player2, 'y', 'b') + parseInt(ball.css('height')))
+                    )){
                 // alert('bounce off player2');
                 reverse_x = true;
                 setBallCoords(ball, new_left_x, new_top_y);
@@ -194,7 +196,10 @@ function Game() {
         }
         else if (e.keyCode in player2_keys){
 
-            alert('player2key');
+            var current_y = getElemCoord(player2, 'y', 'a');
+            var new_y =  current_y +key_translation[player2_keys[e.keyCode]] ;
+            setPlayerY(player2, new_y);
+            // alert('player2key');
         }
         else {
             alert("ASD");
@@ -214,8 +219,8 @@ function Game() {
 
         //game speed, avoid setting higher than 2
         game_speed = 2;
-        x_offset = 1;
-        y_offset = 5;
+        x_offset = 3;
+        y_offset = 0;
 
         //size of the play_area 
         limit_x = parseInt($($('.play_area')[0]).css('width'));
@@ -232,8 +237,8 @@ function Game() {
         player2_keys = { 56 : 'up' , //KP_8
                          53 : 'down'}; //KP_5
 
-        key_translation = {'up' : -10,
-                           'down' : 10};
+        key_translation = {'up' : -20,
+                           'down' : 20};
 
         setTimeout(function () { Update() }, 50);
 
