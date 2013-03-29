@@ -180,10 +180,21 @@ function Game() {
     };
 
     function KeyHandler(e){
-        if (e.keyCode === 119){
-            // alert('w');
-            current_y = getElemCoord(player1, 'y', 'a');
-            setPlayerY(player1, current_y + 20);
+        // if (e.keyCode === 119){
+        //     // alert('w');
+        //     current_y = getElemCoord(player1, 'y', 'a');
+        //     setPlayerY(player1, current_y + 20);
+        // }
+        //
+        if (e.keyCode in player1_keys ){
+            // alert('player1key');
+            var current_y = getElemCoord(player1, 'y', 'a');
+            var new_y =  current_y +key_translation[player1_keys[e.keyCode]] ;
+            setPlayerY(player1, new_y);
+        }
+        else if (e.keyCode in player2_keys){
+
+            alert('player2key');
         }
         else {
             alert("ASD");
@@ -215,13 +226,14 @@ function Game() {
 
 
         //controls
-        player1_keys = { 'up' : 119, //w
-            'down' : 115}; //s
+        player1_keys = { 119 : 'up', //w
+                         115 : 'down'}; //s
 
-        player2_keys = { 'up' : 56, //KP_8
-            'down': 53}; //KP_5
+        player2_keys = { 56 : 'up' , //KP_8
+                         53 : 'down'}; //KP_5
 
-
+        key_translation = {'up' : -10,
+                           'down' : 10};
 
         setTimeout(function () { Update() }, 50);
 
