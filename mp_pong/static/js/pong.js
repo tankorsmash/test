@@ -1,133 +1,152 @@
 //inspired by http://benogle.com/2009/04/20/jquery-pong.html
-function Game(){ 
+function Game() {
 
-    function movePlayer(plr, offset){
+    function movePlayer(plr, offset) {
 
-        current_y = getElemCoord(plr, 'y');
+        current_y = getElemCoord(plr, 'y', 'a');
         new_y = current_y + offset;
         setPlayerY(plr, new_y);
 
     };
 
-    function setPlayerY(plr, y){
+    function setPlayerY(plr, y) {
 
         plr.css('top', y);
     };
 
-    function moveElem(elem, offset_x, offset_y){
+    function moveElem(elem, offset_x, offset_y) {
 
-        current_x = getElemCoord(elem, 'x');
-        current_y = getElemCoord(elem, 'y');
-        new_x = offset_x + current_x;
-        new_y = offset_y + current_y;
+        current_left_x = getElemCoord(elem, 'x', 'a');
+        current_right_x = getElemCoord(elem, 'x', 'b');
+        current_top_y = getElemCoord(elem, 'y', 'a');
+        current_bot_y = getElemCoord(elem, 'y', 'b');
 
-        if (validateCoord(new_x, 'x') != true) {
+        new_left_x = offset_x + current_left_x;
+        new_right_x = offset_x + current_right_x;
+        new_top_y = offset_y + current_top_y;
+        new_bot_y = offset_y + current_bot_y;
+
+
+        if (validateCoord(new_left_x, 'x') != true || validateCoord(new_right_x, 'x') != true) {
             //someone scored
             alert('scored');
-            if (coord < 0){
+            if (coord < 0) {
                 scorePoint(player1, 1);
-                // hitLimit(elem, 'x');}
-                }
-                
+            }
+
             else {
                 scorePoint(player2, 1);
-                // hitLimit(elem, 'x');
             }
         }
-        else if (validateCoord(new_y, 'y') != true){
+        else if (validateCoord(new_top_y, 'y') != true || validateCoord(new_bot_y, 'y') != true) {
             //ball hit wall, reverse vertical direction
             console.log('hit wall');
 
             offset_y *= -1;
             reverse_y = true;
-            new_y = current_y + offset_y;
-            setBallCoords(ball, new_x, new_y);
+            new_top_y = current_top_y + offset_y;
+            setBallCoords(ball, new_left_x, new_top_y);
 
         }
 
         else {
-            setBallCoords(ball, new_x, new_y);
+            setBallCoords(ball, new_left_x, new_top_y);
         }
-    };
+    }
 
-    // function hitLimit(elem, x_or_y){
 
-    //     if (elem === ball){
 
-    // }
-
-    function scorePoint(plr, points){
+    function scorePoint(plr, points) {
         alert('score!');
     }
 
-    function validateCoord(coord, x_or_y){
+    function validateCoord(coord, x_or_y) {
 
-        if (x_or_y == 'x'){
+        if (x_or_y === 'x') {
             // alert('x testing');
             console.log(coord);
             console.log(limit_x);
-            if (coord < 0 || coord > limit_x){
+            if (coord < 0 || coord > limit_x) {
                 alert('x false');
-                return false;}
-                // else {
-                //     return true;}
+                return false;
+            }
+            // else {
+            //     return true;}
         }
-        else if (x_or_y == 'y'){
+        else if (x_or_y === 'y') {
             console.log(coord);
             console.log(limit_y);
-            if (coord < 0 || coord > limit_y){
+            if (coord < 0 || coord > limit_y) {
                 console.log('y false');
-                return false;}
-                // else {
-                //     return true;}
+                return false;
+            }
+            // else {
+            //     return true;}
         }
 
         return true;
     }
 
 
-    function setBallCoords(ball, x, y){
+    function setBallCoords(ball, x, y) {
 
-        ball.css('top',y);
-        ball.css('left',x);
+        ball.css('top', y);
+        ball.css('left', x);
 
     };
 
-    function getElemCoord(elem, x_or_y){
+    function getElemCoord(elem, x_or_y, a_or_b) {
 
-        if (x_or_y == "y"){
+        if (x_or_y === "y") {
             coord = parseInt(elem.css('top'));
+            //get top of the object
+            if (a_or_b === 'a') {
+                coord;
+            }
+            //get bottom side coord
+            else {
+                coord += parseInt(elem.css('height'));
+                console.log('height' + coord);
+            }
         }
         else {
             coord = parseInt(elem.css('left'));
+            //get left side coord
+            if (a_or_b === 'a') {
+                coord;
+            }
+            //get most right side coord
+            else {
+                coord += parseInt(elem.css('width'));
+            }
         }
         return coord;
-    };
+    }
 
-    function Update(){
+    function Update() {
 
-        movePlayer(player1, 5);
+        // movePlayer(player1, 5);
 
 
         moveElem(ball, x_offset, y_offset);
-        if (reverse_y == true){
+        if (reverse_y === true) {
             y_offset *= -1;
             reverse_y = false;
         }
-        if (reverse_x == true){
-            x_offset *=-1;
+        if (reverse_x === true) {
+            x_offset *= -1;
             reverse_x = false;
         }
 
-        setTimeout(function() { Update()}, 16);
+        setTimeout(function () { Update() }, 16);
     };
 
-    function Start(){
+    function Start() {
 
         player1 = $($('.player1')[0]);
         player2 = $($('.player2')[0]);
 
-        ball= $($('.ball')[0]);
+        ball = $($('.ball')[0]);
         x_offset = 1;
         y_offset = 5;
 
@@ -139,25 +158,26 @@ function Game(){
 
         movePlayer(player1, 5);
 
-        setTimeout(function() { Update()}, 50);
+        setTimeout(function () { Update() }, 50);
 
         console.log('done start');
         console.log($(this));
 
-    };
+    }
 
     Start()
 };
 
 
-$(document).ready(function(){
+$(document).ready(function () {
 
     var game_started = false;
-    $("#pong_game").on("click", function(e){
+    $("#pong_game").on("click", function (e) {
 
-        if (game_started != true){
+        if (game_started != true) {
             Game();
-            game_started = true;}
+            game_started = true;
+        }
 
     })
 });
