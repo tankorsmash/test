@@ -10,6 +10,7 @@ def index(request):
     # return HttpResponse("this is where pong'll get played")
     return render(request, "mp_pong/index.html", {"user_css":"css/pong.css",
                                                   "jquery": "js/jquery-1.9.1.js",
+                                                  "pong" : "js/pong.js",
                                                   "start":True})
 
 def matches(request):

@@ -9,7 +9,7 @@ from mp_pong.models import Player, PongMatch
 def index(request):
     # return HttpResponse("this is where pong'll get played")
     return render(request, "mp_pong/index.html", {"user_css":"css/pong.css",
-                                                  "jquery": "jquery-1.9.1.js",
+                                                  "jquery": "js/jquery-1.9.1.js",
                                                   "start":True})
 
 def matches(request):
