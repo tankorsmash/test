@@ -39,8 +39,10 @@ def add_player(request):
             messages.add_message(request, messages.INFO, "invalid initials")
             return HttpResponseRedirect("/play/")
 
-def matches(request):
-    return HttpResponse("you're looking at the matches played")
+def leaderboards(request):
+    #get all matches
+    all_matches = Match.objects.all()
+    return render(request, "mp_pong/leaderboards.html", {"matches": all_matches})
 
 def details(request, match_id):
     return HttpResponse("you're looking at the details of one match someone played {0}".format(match_id))

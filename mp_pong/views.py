@@ -40,7 +40,15 @@ def add_player(request):
             return HttpResponseRedirect("/play/")
 
 def leaderboards(request):
-    return HttpResponse("you're looking at the matches played")
+    #get all matches
+    all_matches = Match.objects.all()
+
+    #get all players
+
+    #get all their matches
+
+    #sort player list by matches or wins
+    return render(request, "mp_pong/leaderboards.html", {"matches": all_matches})
 
 def details(request, match_id):
     return HttpResponse("you're looking at the details of one match someone played {0}".format(match_id))
