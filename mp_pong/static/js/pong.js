@@ -1,13 +1,17 @@
 //inspired by http://benogle.com/2009/04/20/jquery-pong.html
 function Game() {
 
-    function movePlayer(plr, offset) {
+    // function movePlayer(plr, offset) {
 
-        current_y = getElemCoord(plr, 'y', 'a');
-        new_y = current_y + offset;
-        setPlayerY(plr, new_y);
+    //     current_y = getElemCoord(plr, 'y', 'a');
+    //     new_y = current_y + offset;
+    //     if (new_y > 0 && new_y < limit_y - parseInt(plr.css('height')) ){
+    //         console.log("new y"+ new_y);
+    //         setPlayerY(plr, new_y);
+    //     }
+    //     else {alert("no dice")}
 
-    };
+    // };
 
     function setPlayerY(plr, y) {
 
@@ -273,7 +277,11 @@ function Game() {
             if (e.keyCode in player1_keys ){
                 var current_y = getElemCoord(player1, 'y', 'a');
                 var new_y =  current_y +key_translation[player1_keys[e.keyCode]] ;
-                setPlayerY(player1, new_y);
+                if (isValidPaddleY(player1, new_y)){
+                // if (new_y > 0 && new_y < limit_y - parseInt(player1.css('height')) ){
+                    console.log("new y"+ new_y);
+                    setPlayerY(player1, new_y);
+                }
             }
             //and also deal with player2's keys
             // although since I'm using $.keypress and not $.keydown, which means I
@@ -291,6 +299,13 @@ function Game() {
         //without submitting the match data
         if (e.keyCode === 114){ //spacebar
             restartGame();
+        };
+    };
+
+    function isValidPaddleY(plr, new_y){
+        // var current_y = getElemCoord(player1, 'y', 'a');
+        if (new_y > 0 && new_y < limit_y - parseInt(plr.css('height')) ){
+            return true;
         };
     };
 
