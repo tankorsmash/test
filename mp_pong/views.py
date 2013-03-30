@@ -22,7 +22,7 @@ def index(request):
                                                   "jquery": "js/jquery-1.9.1.js",
                                                   "pong" : "js/pong.js",
                                                   "form":form,
-                                                  "start":True})
+                                                  })
 
 def matches(request):
     return HttpResponse("you're looking at the matches played")

@@ -1,3 +1,8 @@
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
 #pong_game{
     margin-left:25%;
     margin-right:25%;
@@ -7,6 +12,8 @@
     position:relative;
 
     background:black;
+    border-radius: 5px;
+
     width:800px;
     height:600px;
 }
@@ -62,6 +69,7 @@
     top:25px;
     right: 25%;
     font-family: "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+    font-size: 300%;
 
 }
 

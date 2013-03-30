@@ -73,8 +73,9 @@ function Game() {
                 reverse_x = true;
                 setBallCoords(ball, new_left_x, new_top_y);
             }
-            //TODO make this a loop over the two players instead of repeating
-            //the similar code
+            //TODO: Eliminate repetition
+
+            //checks the same as above, but for player2
             else if(( new_right_x  > getElemCoord(player2,'x','a') &&
                         new_top_y < getElemCoord(player2, 'y', 'b') &&
                         new_top_y > (getElemCoord(player2, 'y', 'a') - parseInt(ball.css('height')))
@@ -99,6 +100,7 @@ function Game() {
 
 
 
+    //scores a point for the given player and increments the necessary fields
     function scorePoint(plr, points) {
 
         // reset the ball to the middle of the table
@@ -135,23 +137,8 @@ function Game() {
         // $(document).focus();
         pauseGame(null, false);
         
-
-        //TODO: get player intials, save to db, show link to leaderboards
-        handleIntials();
     };
 
-    function handleIntials(){
-
-        createIntialEntryFrom();
-    };
-
-    function createIntialEntryFrom(){
-
-        $("#pong_game").after()
-    };
-
-    function saveIntitaislToDb(){
-    };
 
     //returns a random item from the list
     function randomItemFromList(a_list){
@@ -280,6 +267,7 @@ function Game() {
 
     function KeyHandler(e){
 
+        //if the game isn't paused, move the players' paddles
         if (game_paused === false){
             //deal with player1's keys
             if (e.keyCode in player1_keys ){
@@ -298,6 +286,20 @@ function Game() {
                 setPlayerY(player2, new_y);
             }
         }
+
+        //regardless if the game is pause, the Spacebar restarts the game
+        //without submitting the match data
+        if (e.keyCode === 114){ //spacebar
+            restartGame();
+        };
+    };
+
+    //resets the ball location, the score, and the timeout list
+    function restartGame(){
+        player_score = {'player1' : 0, 'player2' : 0};
+        $('input#id_'+player+'_score').val(player_score[player]);
+
+        setBallCoords(ball, limit_x / 2, limit_y / 2);
     };
 
 
