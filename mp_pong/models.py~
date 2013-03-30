@@ -27,7 +27,7 @@ class PongMatch(models.Model):
 
     def __unicode__(self):
 
-        #takes the unicode representation of the object and adds 
+        #takes the unicode representation of the object and adds
         # a W if it's the winner
         player1_msg = unicode(self.player1)
         player2_msg = unicode(self.player2)

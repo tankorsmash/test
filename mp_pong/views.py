@@ -1,6 +1,8 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
+from django.contrib import messages
+
 from mp_pong.models import Player, PongMatch
 from mp_pong.forms import PongMatchForm, PlayerForm
 
@@ -33,7 +35,9 @@ def add_player(request):
         if form.is_valid():
             form.save();
             return HttpResponseRedirect("/play/")
-
+        else:
+            messages.add_message(request, messages.INFO, "invalid initials")
+            return HttpResponseRedirect("/play/")
 
 def matches(request):
     return HttpResponse("you're looking at the matches played")
