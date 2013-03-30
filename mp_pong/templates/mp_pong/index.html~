@@ -2,17 +2,11 @@
 <link rel="stylesheet" href="{% static user_css %}" type="text/css" />
 <script type="text/javascript" src="{% static jquery %} "></script>
 <script type="text/javascript" src="{% static pong %} "></script>
-
+<title> {{ titles }}</title>
 
 
 
 <h1>Are you ready to Pong? </h1>
-
-{% if start %}
-HAHAA BUSINESS
-{% endif %}
-
-
 
 <div id='pong_game' tabindex='0'>
     <div class='play_area'>

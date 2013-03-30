@@ -140,7 +140,7 @@ function Game() {
 
         // $(document).focus();
         pauseGame(null, false);
-        
+
     };
 
 
@@ -278,191 +278,191 @@ function Game() {
                 var current_y = getElemCoord(player1, 'y', 'a');
                 var new_y =  current_y +key_translation[player1_keys[e.keyCode]] ;
                 if (isValidPaddleY(player1, new_y)){
-                // if (new_y > 0 && new_y < limit_y - parseInt(player1.css('height')) ){
+                    // if (new_y > 0 && new_y < limit_y - parseInt(player1.css('height')) ){
                     console.log("new y"+ new_y);
                     setPlayerY(player1, new_y);
                 }
+                }
+                //and also deal with player2's keys
+                // although since I'm using $.keypress and not $.keydown, which means I
+                // don't have a global variable in place to determine whether or not the 
+                // player is moving or not, only one player can move at once. A pretty
+                // big issue.
+                if (e.keyCode in player2_keys){
+                    var current_y = getElemCoord(player2, 'y', 'a');
+                    var new_y =  current_y +key_translation[player2_keys[e.keyCode]] ;
+                    if (isValidPaddleY(player2, new_y)){
+                        setPlayerY(player2, new_y);
+                    };
+                }
             }
-            //and also deal with player2's keys
-            // although since I'm using $.keypress and not $.keydown, which means I
-            // don't have a global variable in place to determine whether or not the 
-            // player is moving or not, only one player can move at once. A pretty
-            // big issue.
-            if (e.keyCode in player2_keys){
-                var current_y = getElemCoord(player2, 'y', 'a');
-                var new_y =  current_y +key_translation[player2_keys[e.keyCode]] ;
-                if (isValidPaddleY(player2, new_y)){
-                setPlayerY(player2, new_y);
-                };
+
+            //regardless if the game is pause, the Spacebar restarts the game
+            //without submitting the match data
+            if (e.keyCode === 114){ //spacebar
+                restartGame();
+            };
+        };
+
+        function isValidPaddleY(plr, new_y){
+            // var current_y = getElemCoord(player1, 'y', 'a');
+            if (new_y > 0 && new_y < limit_y - parseInt(plr.css('height')) ){
+                return true;
+            };
+        };
+
+        //resets the ball location, the score, and the timeout list
+        function restartGame(){
+            player_score = {'player1' : 0, 'player2' : 0};
+            $('input#id_'+player+'_score').val(player_score[player]);
+
+            setBallCoords(ball, limit_x / 2, limit_y / 2);
+        };
+
+
+        function pauseGame(e, verbose){
+
+            // alert('pause game loudly');
+
+            //save the old offsets
+            if (game_paused != true){
+                old_x_offset = x_offset;
+                old_y_offset = y_offset;
+            };
+
+            x_offset = 0;
+            y_offset = 0;
+
+            game_paused = true;
+
+            //if the verbose param isn't set, use true
+            verbose =  typeof(verbose) !== 'undefined' ? verbose : true;
+
+            if (verbose === true){
+                alert_string = randomItemFromList(flavour_pause);
+                // alert('The game is paused, click the unpause');
+                console.log(alert_string);
+            };
+            //foreach timeout in the list, clearTimeout so there's no more pending
+            //updates. essentially pauses the game
+            for (var i = 0; i < timeouts.length; i++) {
+                clearTimeout(timeouts[i]);
             }
+            //reset to empty
+            timeouts =[]
+        };
+
+        function unpauseGame(e){
+
+            game_paused = false;
+
+            //reset the ball's velocity
+            x_offset = old_x_offset;
+            y_offset = old_y_offset;
+
+            // alert('unpause');
+            //don't want to create more than one Update timeout, so I check if
+            //there's at least one in the list already, if so, no need to unpause
+            if (timeouts.length === 0){
+                Update();
+            }
+
+            console.log('unpause');
+        };
+
+
+        function Start() {
+
+            // console.log($(this));
+
+            //represents the player and ball objects 
+            //TODO: insert via jquery.after() instead of hardcode
+            player1 = $($('.player1')[0]);
+            player2 = $($('.player2')[0]);
+            ball = $($('.ball')[0]);
+
+            //score limits and score string elements
+            score_limit = 1;
+            score_p1 = $($('.score_p1')[0]);
+            score_p2 = $($('.score_p2')[0]);
+
+            //game speed, avoid setting higher than 2
+            game_speed = 2;
+            game_paused = false;
+            x_offset = -3;
+            y_offset = 2;
+
+            //size of the play_area 
+            limit_x = parseInt($($('.play_area')[0]).css('width'));
+            limit_y = parseInt($($('.play_area')[0]).css('height'));
+
+            //whether the ball's trajectory  needs to be reversed, ie wall/paddle collision
+            reverse_x = false;
+            reverse_y = false;
+
+
+            //controls
+            player1_keys = { 119 : 'up', //w
+                115 : 'down'}; //s
+
+            player2_keys = { 56 : 'up' , //KP_8
+                53 : 'down'}; //KP_5
+
+            key_translation = {'up' : -20,
+                'down' : 20};
+
+            //scoring record
+            player_score = {'player1' : 0, 'player2' : 0};
+
+            //keep track of the timeouts so that we can pause and unpause later
+            timeouts = [];
+            //              update the game every 50ms. 16.6 is 60fps
+            timeouts.push(setTimeout(function () { Update() }, 32));
+
+            //flavour text
+            flavour_win = ['you\'ve won!', 'you did it!', 'you\'re the best!',
+                        'a Winner is you! It\'s a secret to everybody!'];
+            flavour_pause = ['The game is paused', 'Think we can get back to this?',
+                          'Is it because you\'re losing?', 'I\'m ready to win, let\'s go!'];
+
+
+            // console.log('done start');
+
+            $("#pong_game").ready(function(){
+
+                //associates the function KeyHandler with keypresses
+                $("#pong_game").keypress(KeyHandler);
+
+                //sets up the pause/unpause based on whether or not the game has
+                //focus
+                $("#pong_game").focusout(pauseGame);
+                $("#pong_game").click(unpauseGame);
+
+
+            });
+
+            console.log('game start');
         }
 
-        //regardless if the game is pause, the Spacebar restarts the game
-        //without submitting the match data
-        if (e.keyCode === 114){ //spacebar
-            restartGame();
-        };
-    };
-
-    function isValidPaddleY(plr, new_y){
-        // var current_y = getElemCoord(player1, 'y', 'a');
-        if (new_y > 0 && new_y < limit_y - parseInt(plr.css('height')) ){
-            return true;
-        };
-    };
-
-    //resets the ball location, the score, and the timeout list
-    function restartGame(){
-        player_score = {'player1' : 0, 'player2' : 0};
-        $('input#id_'+player+'_score').val(player_score[player]);
-
-        setBallCoords(ball, limit_x / 2, limit_y / 2);
+        Start();
+        console.log('game start post');
     };
 
 
-    function pauseGame(e, verbose){
+    $(document).ready(function () {
 
-        // alert('pause game loudly');
+        var game_started = false;
+        $("#pong_game").on("click", function (e) {
 
-        //save the old offsets
-        if (game_paused != true){
-            old_x_offset = x_offset;
-            old_y_offset = y_offset;
-        };
-
-        x_offset = 0;
-        y_offset = 0;
-
-        game_paused = true;
-
-        //if the verbose param isn't set, use true
-        verbose =  typeof(verbose) !== 'undefined' ? verbose : true;
-
-        if (verbose === true){
-            alert_string = randomItemFromList(flavour_pause);
-            // alert('The game is paused, click the unpause');
-            console.log(alert_string);
-        };
-        //foreach timeout in the list, clearTimeout so there's no more pending
-        //updates. essentially pauses the game
-        for (var i = 0; i < timeouts.length; i++) {
-            clearTimeout(timeouts[i]);
-        }
-        //reset to empty
-        timeouts =[]
-    };
-
-    function unpauseGame(e){
-
-        game_paused = false;
-
-        //reset the ball's velocity
-        x_offset = old_x_offset;
-        y_offset = old_y_offset;
-
-        // alert('unpause');
-        //don't want to create more than one Update timeout, so I check if
-        //there's at least one in the list already, if so, no need to unpause
-        if (timeouts.length === 0){
-            Update();
-        }
-
-        console.log('unpause');
-    };
+            if (game_started != true) {
+                Game();
+                game_started = true;
+            }
+            else{
+                // alert('game already running');
+                console.log('game already running');
+            };
 
 
-    function Start() {
-
-        // console.log($(this));
-
-        //represents the player and ball objects 
-        //TODO: insert via jquery.after() instead of hardcode
-        player1 = $($('.player1')[0]);
-        player2 = $($('.player2')[0]);
-        ball = $($('.ball')[0]);
-
-        //score limits and score string elements
-        score_limit = 1;
-        score_p1 = $($('.score_p1')[0]);
-        score_p2 = $($('.score_p2')[0]);
-
-        //game speed, avoid setting higher than 2
-        game_speed = 2;
-        game_paused = false;
-        x_offset = -3;
-        y_offset = 2;
-
-        //size of the play_area 
-        limit_x = parseInt($($('.play_area')[0]).css('width'));
-        limit_y = parseInt($($('.play_area')[0]).css('height'));
-
-        //whether the ball's trajectory  needs to be reversed, ie wall/paddle collision
-        reverse_x = false;
-        reverse_y = false;
-
-
-        //controls
-        player1_keys = { 119 : 'up', //w
-            115 : 'down'}; //s
-
-        player2_keys = { 56 : 'up' , //KP_8
-            53 : 'down'}; //KP_5
-
-        key_translation = {'up' : -20,
-            'down' : 20};
-
-        //scoring record
-        player_score = {'player1' : 0, 'player2' : 0};
-
-        //keep track of the timeouts so that we can pause and unpause later
-        timeouts = [];
-        //              update the game every 50ms. 16.6 is 60fps
-        timeouts.push(setTimeout(function () { Update() }, 32));
-
-        //flavour text
-        flavour_win = ['you\'ve won!', 'you did it!', 'you\'re the best!',
-                    'a Winner is you! It\'s a secret to everybody!'];
-        flavour_pause = ['The game is paused', 'Think we can get back to this?',
-                      'Is it because you\'re losing?', 'I\'m ready to win, let\'s go!'];
-
-
-        // console.log('done start');
-
-        $("#pong_game").ready(function(){
-
-            //associates the function KeyHandler with keypresses
-            $("#pong_game").keypress(KeyHandler);
-
-            //sets up the pause/unpause based on whether or not the game has
-            //focus
-            $("#pong_game").focusout(pauseGame);
-            $("#pong_game").click(unpauseGame);
-
-
-        });
-
-        console.log('game start');
-    }
-
-    Start();
-    console.log('game start post');
-};
-
-
-$(document).ready(function () {
-
-    var game_started = false;
-    $("#pong_game").on("click", function (e) {
-
-        if (game_started != true) {
-            Game();
-            game_started = true;
-        }
-        else{
-            // alert('game already running');
-            console.log('game already running');
-        };
-
-
-    })
-});
+        })
+    });
