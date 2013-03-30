@@ -4,7 +4,7 @@ function Game() {
     // function movePlayer(plr, offset) {
 
     //     current_y = getElemCoord(plr, 'y', 'a');
-    //     new_y = current_y + offset;
+    //     new_y = current_y+ offset;
     //     if (new_y > 0 && new_y < limit_y - parseInt(plr.css('height')) ){
     //         console.log("new y"+ new_y);
     //         setPlayerY(plr, new_y);
@@ -15,12 +15,12 @@ function Game() {
 
     function updateMsgBar(msg){
         $('#msg_bar').text(msg);
-    };
+    }
 
     function setPlayerY(plr, y) {
 
         plr.css('top', y);
-    };
+    }
 
     function moveElem(elem, offset_x, offset_y) {
 
@@ -39,7 +39,7 @@ function Game() {
 
 
         //check the element against the play area boundaries
-        if (validateCoord(new_left_x, 'x') != true || validateCoord(new_right_x, 'x') != true) {
+        if (validateCoord(new_left_x, 'x') !== true || validateCoord(new_right_x, 'x') !== true) {
             //someone scored
             if (new_left_x < 0) {
                 scorePoint(player2, 1);
@@ -48,7 +48,7 @@ function Game() {
                 scorePoint(player1, 1);
             }
         }
-        else if (validateCoord(new_top_y, 'y') != true || validateCoord(new_bot_y, 'y') != true) {
+        else if (validateCoord(new_top_y, 'y') !== true || validateCoord(new_bot_y, 'y') !== true) {
             //ball hit a wall so reverse vertical direction
             reverse_y = true;
 
@@ -65,7 +65,7 @@ function Game() {
             // within the x and y axes. It adjusts the size of the bounding box
             // to allow for only portions of the ball to get hit by the paddle
             //           check leftmost point is further than the paddles rightmost point
-            if(( (new_left_x  < getElemCoord(player1,'x','b')) &&
+            if (((new_left_x  < getElemCoord(player1, 'x', 'b')) &&
                         //topmost point of the ball is less than the paddle's bottom point
                         new_top_y < getElemCoord(player1, 'y', 'b') &&
                         //topmost point of the ball is greater than the paddle's
@@ -75,8 +75,8 @@ function Game() {
                     //do all the equivalent checks for the bottom of the paddle
                     //instead of the top of the paddle
                     (new_left_x < getElemCoord(player1, 'x', 'b') &&
-                     new_bot_y > getElemCoord(player1, 'y', 'a') && 
-                     (new_bot_y < getElemCoord(player1, 'y', 'a') + parseInt(ball.css('height'))))){
+                     new_bot_y > getElemCoord(player1, 'y', 'a') &&
+                     (new_bot_y < getElemCoord(player1, 'y', 'a') + parseInt(ball.css('height'))))) {
                 // updateMsgBar('bounce off player1');
                 reverse_x = true;
                 setBallCoords(ball, new_left_x, new_top_y);
@@ -84,19 +84,19 @@ function Game() {
             //TODO: Eliminate repetition
 
             //checks the same as above, but for player2
-            else if(( new_right_x  > getElemCoord(player2,'x','a') &&
+            else if (( new_right_x  > getElemCoord(player2,'x', 'a') &&
                         new_top_y < getElemCoord(player2, 'y', 'b') &&
                         new_top_y > (getElemCoord(player2, 'y', 'a') - parseInt(ball.css('height')))
                     ) ||
                     (new_right_x > getElemCoord(player2, 'x', 'a') &&
                      new_bot_y > getElemCoord(player2, 'y', 'a') && 
                      (new_bot_y < getElemCoord(player2, 'y', 'b') + parseInt(ball.css('height')))
-                    )){
+                    )) {
                 reverse_x = true;
                 setBallCoords(ball, new_left_x, new_top_y);
             }
 
-            else{
+            else {
                 setBallCoords(ball, new_left_x, new_top_y);
             }
         }
@@ -112,7 +112,7 @@ function Game() {
     function scorePoint(plr, points) {
 
         // reset the ball to the middle of the table
-        setBallCoords(ball, limit_x /2, limit_y /2);
+        setBallCoords(ball, limit_x / 2, limit_y / 2);
 
         // console.log(plr);
         // gets the class of the plr object, expecting player1 or player2
@@ -134,7 +134,7 @@ function Game() {
                 break;
             }
         }
-    };
+    }
 
 
     function gameOver(){
@@ -147,14 +147,14 @@ function Game() {
         player_score.player2 = 0
 
         //reposition players
-        setPlayerY(player1, limit_y /2 - (player1.css('height') /2));
-        setPlayerY(player2, limit_y /2 - (player2.css('height') /2));
+        setPlayerY(player1, limit_y / 2 - (player1.css('height') / 2));
+        setPlayerY(player2, limit_y / 2 - (player2.css('height') / 2));
 
         //TODO: Make sure the balls' corners are reset to neutral on restart
 
         pauseGame(null, false);
 
-    };
+    }
 
 
     //returns a random item from the list
@@ -164,7 +164,7 @@ function Game() {
         chosen_string = a_list[rand_index];
 
         return chosen_string;
-    };
+    }
 
     function validateCoord(coord, x_or_y) {
 
@@ -199,7 +199,7 @@ function Game() {
         ball.css('top', y);
         ball.css('left', x);
 
-    };
+    }
 
     //returns a single point out of the four following points:
     // leftmost, topmost, bottommost, rightmost, which looks a little like:
@@ -338,7 +338,7 @@ function Game() {
             // updateMsgBar('pause game loudly');
 
             //save the old offsets
-            if (game_paused != true){
+            if (game_paused !== true){
                 old_x_offset = x_offset;
                 old_y_offset = y_offset;
             };
@@ -468,11 +468,11 @@ function Game() {
         var game_started = false;
         $("#pong_game").on("click", function (e) {
 
-            if (game_started != true) {
+            if (game_started !== true) {
                 Game();
                 game_started = true;
             }
-            else{
+            else {
                 // updateMsgBar('game already running');
                 console.log('game already running');
             };
