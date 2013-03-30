@@ -106,8 +106,11 @@ function Game() {
 
         // console.log(plr);
         // gets the class of the plr object, expecting player1 or player2
-        player = plr.get()[0].className
-            player_score[player] += 1;
+        player = plr.get()[0].className;
+        player_score[player] += 1;
+
+        //update the html of the page with the new score
+        $('input#id_'+player+'_score').val(player_score[player]);
 
         //flip the ball's direction around so the scorer doesn't have the
         //advantage
@@ -126,12 +129,28 @@ function Game() {
 
     function gameOver(){
 
-        pauseGame(null, false);
         //random selection of flavour text
         alert(player + ", " + randomItemFromList(flavour_win));
 
-        $(document).focus();
+        // $(document).focus();
         pauseGame(null, false);
+        
+
+        //TODO: get player intials, save to db, show link to leaderboards
+        handleIntials();
+    };
+
+    function handleIntials(){
+
+        createIntialEntryFrom();
+    };
+
+    function createIntialEntryFrom(){
+
+        $("#pong_game").after()
+    };
+
+    function saveIntitaislToDb(){
     };
 
     //returns a random item from the list

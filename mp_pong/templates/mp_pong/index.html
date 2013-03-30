@@ -12,6 +12,11 @@
 HAHAA BUSINESS
 {% endif %}
 
+<form action="/play/" method="post">{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="Submit" />
+</form>
+
 
 <div id='pong_game' tabindex='0'>
     <div class='play_area'>
