@@ -9,11 +9,11 @@ function Game() {
     //         console.log("new y"+ new_y);
     //         setPlayerY(plr, new_y);
     //     }
-    //     else {alert("no dice")}
+    //     else {alert2("no dice")}
 
     // };
 
-    function alert(msg){
+    function alert2(msg){
         $('#msg_bar').text(msg);
     };
 
@@ -77,7 +77,7 @@ function Game() {
                     (new_left_x < getElemCoord(player1, 'x', 'b') &&
                      new_bot_y > getElemCoord(player1, 'y', 'a') && 
                      (new_bot_y < getElemCoord(player1, 'y', 'a') + parseInt(ball.css('height'))))){
-                // alert('bounce off player1');
+                // alert2('bounce off player1');
                 reverse_x = true;
                 setBallCoords(ball, new_left_x, new_top_y);
             }
@@ -140,7 +140,7 @@ function Game() {
     function gameOver(){
 
         //random selection of flavour text
-        alert("GAME OVER: "+ player + ", " + randomItemFromList(flavour_win));
+        alert2("GAME OVER: "+ player + ", " + randomItemFromList(flavour_win));
 
         // $(document).focus();
         pauseGame(null, false);
@@ -160,11 +160,11 @@ function Game() {
     function validateCoord(coord, x_or_y) {
 
         if (x_or_y === 'x') {
-            // alert('x testing');
+            // alert2('x testing');
             // console.log(coord);
             // console.log(limit_x);
             if (coord < 0 || coord > limit_x) {
-                // alert('x false');
+                // alert2('x false');
                 return false;
             }
             // else {
@@ -326,7 +326,7 @@ function Game() {
 
         function pauseGame(e, verbose){
 
-            // alert('pause game loudly');
+            // alert2('pause game loudly');
 
             //save the old offsets
             if (game_paused != true){
@@ -344,8 +344,8 @@ function Game() {
 
             if (verbose === true){
                 alert_string = randomItemFromList(flavour_pause);
-                // alert('The game is paused, click the unpause');
-                alert("PAUSED: " + alert_string);
+                // alert2('The game is paused, click the unpause');
+                alert2("PAUSED: " + alert_string);
             };
             //foreach timeout in the list, clearTimeout so there's no more pending
             //updates. essentially pauses the game
@@ -364,7 +364,7 @@ function Game() {
             x_offset = old_x_offset;
             y_offset = old_y_offset;
 
-            // alert('unpause');
+            // alert2('unpause');
             //don't want to create more than one Update timeout, so I check if
             //there's at least one in the list already, if so, no need to unpause
             if (timeouts.length === 0){
@@ -372,7 +372,7 @@ function Game() {
             }
 
             console.log('unpause');
-            alert("Game on!");
+            alert2("Game on!");
         };
 
 
@@ -446,7 +446,7 @@ function Game() {
 
             });
 
-            alert('The game has started!');
+            alert2('The game has started!');
         }
 
         Start();
@@ -464,7 +464,7 @@ function Game() {
                 game_started = true;
             }
             else{
-                // alert('game already running');
+                // alert2('game already running');
                 console.log('game already running');
             };
 
