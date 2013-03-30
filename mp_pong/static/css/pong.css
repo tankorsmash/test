@@ -16,7 +16,13 @@ h1{
     position:relative;
 
     background:black;
-    border-radius: 5px;
+
+    border-bottom-left-radius: 100%15px;
+    border-bottom-right-radius: 100%15px;
+    border-top-left-radius: 100%15px;
+    border-top-right-radius: 100%15px;
+
+    box-shadow: 3px 17px 50px;
 
     width:800px;
     height:600px;

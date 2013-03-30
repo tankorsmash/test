@@ -2,6 +2,10 @@ body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+h1{
+    text-align: center;
+}
+
 
 #pong_game{
     margin-left:25%;
@@ -12,7 +16,13 @@ body {
     position:relative;
 
     background:black;
-    border-radius: 5px;
+
+    border-bottom-left-radius: 100%30px;
+    border-bottom-right-radius: 100%30px;
+    border-top-left-radius: 100%30px;
+    border-top-right-radius: 100%30px;
+
+    box-shadow: 3px 17px 50px;
 
     width:800px;
     height:600px;
