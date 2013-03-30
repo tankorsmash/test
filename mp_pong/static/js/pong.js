@@ -202,34 +202,53 @@ function Game() {
         score_p1.text(player_score.player1);
         score_p2.text(player_score.player2);
 
+        updateBallCss(ball);
         //create a Timeout and add it to the list so we can pause and unpause at
         //anytime
         timeouts.push(setTimeout(function () { Update() }, 16));
     };
 
+    function updateBallCss(ball){
+        //a little flourish on the ball, round the corners of the ball depending
+        //on the direction its heading
+        
+        //reset radius
+        ball.css('border-radius', '0px');
+
+        //determine which side of the ball will be rounded based on the
+        //direction of the ball
+        var left_or_right = "";
+        if (x_offset < 0){
+            left_or_right = "left";
+        }
+        else {
+            left_or_right = "right";
+        }
+        //apply the css based on the left_or_right  var
+        var top_css = 'border-top-'+left_or_right+ '-radius';
+        var bottom_css = 'border-bottom-'+left_or_right+ '-radius';
+        var ball_radius = '10px'
+        ball.css(top_css, ball_radius);
+        ball.css(bottom_css, ball_radius);
+
+    };
+
     function KeyHandler(e){
-        // if (e.keyCode === 119){
-        //     // alert('w');
-        //     current_y = getElemCoord(player1, 'y', 'a');
-        //     setPlayerY(player1, current_y + 20);
-        // }
-        //
+
         if (e.keyCode in player1_keys ){
             // alert('player1key');
             var current_y = getElemCoord(player1, 'y', 'a');
             var new_y =  current_y +key_translation[player1_keys[e.keyCode]] ;
             setPlayerY(player1, new_y);
         }
-        else if (e.keyCode in player2_keys){
-
+        if (e.keyCode in player2_keys){
             var current_y = getElemCoord(player2, 'y', 'a');
             var new_y =  current_y +key_translation[player2_keys[e.keyCode]] ;
             setPlayerY(player2, new_y);
-            // alert('player2key');
         }
-        else {
-            alert("ASD");
-        }
+        // else {
+        //     alert("ASD");
+        // }
     };
 
 

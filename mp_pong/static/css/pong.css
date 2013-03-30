@@ -49,8 +49,9 @@
     color:white;
 
     top:25px;
-    left: 100px;
-
+    left: 25%;
+    font-family: "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+    font-size: 300%;
 }
 
 .score_p2{
@@ -59,7 +60,10 @@
     color:white;
 
     top:25px;
-    right: 100px;
+    right: 25%;
+    font-family: "Lucida Sans Typewriter", "Lucida Console", Monaco, "Bitstream Vera Sans Mono", monospace;
+    font-size: 300%;
+
 }
 
 .divider{
