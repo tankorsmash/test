@@ -9,10 +9,16 @@
 <h1>Are you ready to Pong? </h1>
 <div id=msg_bar>Messages will be displayed here</div>
 
+<p>Add your initials, if you haven't already!</p>
+<form action="/play/add_player/" method="post">{% csrf_token %}
+{{ player_form.as_ul }}
+<input type="submit" value="Submit" />
+</form>
+
 <div id='pong_game' tabindex='0'>
     <div class='play_area'>
-        <div class='score_p1'></div>
-        <div class='score_p2'></div>
+        <div class='score_p1'>--</div>
+        <div class='score_p2'> -- </div>
         <div class='divider'></div>
         <div class='player1'></div>
         <div class='player2'></div>
@@ -21,6 +27,6 @@
 </div>
 
 <form action="/play/" method="post">{% csrf_token %}
-{{ form.as_p }}
+{{ match_form.as_ul }}
 <input type="submit" value="Submit" />
 </form>

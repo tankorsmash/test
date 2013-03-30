@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 from mp_pong.models import Player, PongMatch
-from mp_pong.forms import PongMatchForm
+from mp_pong.forms import PongMatchForm, PlayerForm
 
 
 
@@ -15,15 +15,25 @@ def index(request):
             form.save();
             return HttpResponse("thanks")
     else:
-        form = PongMatchForm()
+        match_form = PongMatchForm()
+        player_form = PlayerForm()
 
     # return HttpResponse("this is where pong'll get played")
     return render(request, "mp_pong/index.html", {"user_css":"css/pong.css",
                                                   "jquery": "js/jquery-1.9.1.js",
                                                   "pong" : "js/pong.js",
-                                                  "form":form,
+                                                  "player_form":player_form,
+                                                  "match_form":match_form,
                                                   "title":'Play Pong!',
                                                   })
+
+def add_player(request):
+    if request.method == "POST":
+        form = PlayerForm(request.POST)
+        if form.is_valid():
+            form.save();
+            return HttpResponseRedirect("/play/")
+
 
 def matches(request):
     return HttpResponse("you're looking at the matches played")
