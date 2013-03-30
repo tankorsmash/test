@@ -36,7 +36,7 @@ def add_player(request):
             form.save();
             return HttpResponseRedirect("/play/")
         else:
-            messages.add_message(request, messages.INFO, message = "invalid")
+            messages.add_message(request, messages.INFO, "invalid initials")
             return HttpResponseRedirect("/play/")
 
 def matches(request):

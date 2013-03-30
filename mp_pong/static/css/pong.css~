@@ -68,7 +68,6 @@ h1{
 .score_p1{
     position:absolute;
 
-    content: '--';
 
     color:white;
 

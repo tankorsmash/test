@@ -39,7 +39,7 @@ def add_player(request):
             messages.add_message(request, messages.INFO, "invalid initials")
             return HttpResponseRedirect("/play/")
 
-def matches(request):
+def leaderboards(request):
     return HttpResponse("you're looking at the matches played")
 
 def details(request, match_id):

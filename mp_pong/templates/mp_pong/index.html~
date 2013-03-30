@@ -11,9 +11,9 @@
 
 
 <h1>Are you ready to Pong? </h1>
-<div id=msg_bar>Watch this space for game messages </div>
+<div id=msg_bar>Watch this space for game messages! </div>
 
-<p>Add your initials, if you haven't already!</p>
+<p>Add your initials to get a spot on the <a href="{% url 'mp_pong:index' %}">leaderboards</a>, if you haven't already!</p>
 <form action="/play/add_player/" method="post">{% csrf_token %}
 {{ player_form.as_p }}
 <input type="submit" value="Submit" />
