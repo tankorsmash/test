@@ -12,7 +12,8 @@ from collections import OrderedDict
 
 
 def index(request):
-    #check for players in db, if not create some dummy ones, just for showing off leaderboards
+    #check for players in db, if not create some dummy ones,
+    # just for showing off leaderboards
     all_players = Player.objects.all()
     #if there's less than 20 players, seed 20 palyers and 45 new matches
     if len(all_players) < 20:
@@ -25,19 +26,19 @@ def index(request):
     if request.method == "POST":
         form = PongMatchForm(request.POST)
         if form.is_valid():
-            form.save();
+            form.save()
             #TODO this should be a render call instead of the string...
             return HttpResponse("thanks")
     else:
         match_form = PongMatchForm()
         player_form = PlayerForm()
 
-    return render(request, "mp_pong/index.html", {"user_css":"css/pong.css",
+    return render(request, "mp_pong/index.html", {"user_css": "css/pong.css",
                                                   "jquery": "js/jquery-1.9.1.js",
-                                                  "pong" : "js/pong.js",
-                                                  "player_form":player_form,
-                                                  "match_form":match_form,
-                                                  "title":'Play Pong!',
+                                                  "pong": "js/pong.js",
+                                                  "player_form": player_form,
+                                                  "match_form": match_form,
+                                                  "title": 'Play Pong!',
                                                   })
 
 #make a post call the /play/add_player to add a player
@@ -45,13 +46,16 @@ def add_player(request):
     if request.method == "POST":
         form = PlayerForm(request.POST)
         if form.is_valid():
-            form.save();
-            messages.add_message(request, messages.INFO, "Sucessfully added initials!")
+            form.save()
+            messages.add_message(request, messages.INFO,
+                                "Sucessfully added initials!")
             return HttpResponseRedirect("/play/")
         else:
             #TODO: Detect why the validation failed and elaborate in message
-            messages.add_message(request, messages.INFO, "Invalid initials, try again please.")
+            messages.add_message(request, messages.INFO,
+                                "Invalid initials, try again please.")
             return HttpResponseRedirect("/play/")
+
 
 def leaderboards(request):
     #get all matches in database
@@ -63,7 +67,8 @@ def leaderboards(request):
     #get all their matches
     player_to_matches = {}
     for player in all_players:
-        found_matches = all_matches.filter(Q(player1__initials=player.initials)|Q(player2__initials=player.initials))
+        found_matches = all_matches.filter(Q(player1__initials=player.initials)
+                                            | Q(player2__initials=player.initials))
         player_to_matches[player] = [m for m in found_matches]
 
     #count the matches played and set that as a value to the player as the key
@@ -73,7 +78,7 @@ def leaderboards(request):
 
     #sort the player_to_played dict on the values, then reverse the list,
     # then finally saving the sorted order via OrderedDict
-    sorted_by_played = OrderedDict(sorted(player_to_played.items(), 
+    sorted_by_played = OrderedDict(sorted(player_to_played.items(),
                                           key=lambda t: t[1])
                                           [::-1])
 
@@ -95,12 +100,13 @@ def leaderboards(request):
     return render(request, "mp_pong/leaderboards.html", {"last20_matches": all_matches[:20],
                                                          "p_t_m": player_to_matches,
                                                          # "sorted_by_p" : player_to_played,
-                                                         "sorted_by_p" : sorted_by_played,
-                                                         "sorted_by_wins" : sorted_by_wins,
+                                                         "sorted_by_p": sorted_by_played,
+                                                         "sorted_by_wins": sorted_by_wins,
 
-                                                         "title":"Leaderboards",
-                                                         
+                                                         "title": "Leaderboards",
                                                          })
 
+
 def details(request, match_id):
-    return HttpResponse("you're looking at the details of one match someone played {0}".format(match_id))
+    msg = "you're looking at the details of one match someone played {0}"
+    return HttpResponse(msg.format(match_id))
