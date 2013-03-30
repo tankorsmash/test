@@ -146,7 +146,12 @@ function Game() {
         player_score.player1 = 0
         player_score.player2 = 0
 
-        // $(document).focus();
+        //reposition players
+        setPlayerY(player1, limit_y /2 - (player1.css('height') /2));
+        setPlayerY(player2, limit_y /2 - (player2.css('height') /2));
+
+        //TODO: Make sure the balls' corners are reset to neutral on restart
+
         pauseGame(null, false);
 
     };
