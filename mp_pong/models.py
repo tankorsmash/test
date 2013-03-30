@@ -7,7 +7,7 @@ class Player(models.Model):
     initials = models.CharField("Players Initials", max_length=3, unique=True)
 
     def __unicode__(self):
-        return self.initials
+        return self.initials.upper()
 
 
 class PongMatch(models.Model):
