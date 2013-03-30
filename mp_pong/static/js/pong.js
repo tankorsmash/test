@@ -303,7 +303,7 @@ function Game() {
         if (verbose === true){
             alert_string = randomItemFromList(flavour_pause);
             // alert('The game is paused, click the unpause');
-            alert(alert_string);
+            console.log(alert_string);
         };
         //foreach timeout in the list, clearTimeout so there's no more pending
         //updates. essentially pauses the game
@@ -318,7 +318,11 @@ function Game() {
 
         game_paused = false;
 
-        alert('unpause');
+        //reset the ball's velocity
+        x_offset = old_x_offset;
+        y_offset = old_y_offset;
+
+        // alert('unpause');
         //don't want to create more than one Update timeout, so I check if
         //there's at least one in the list already, if so, no need to unpause
         if (timeouts.length === 0){
@@ -417,7 +421,8 @@ $(document).ready(function () {
             game_started = true;
         }
         else{
-            alert('game already running');
+            // alert('game already running');
+            console.log('game already running');
         };
 
 
