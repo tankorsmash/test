@@ -16,11 +16,14 @@ function Game() {
 
     function moveElem(elem, offset_x, offset_y) {
 
+        //four single points used for collisions
         current_left_x = getElemCoord(elem, 'x', 'a');
         current_right_x = getElemCoord(elem, 'x', 'b');
         current_top_y = getElemCoord(elem, 'y', 'a');
         current_bot_y = getElemCoord(elem, 'y', 'b');
 
+        //potentially the next set of points that the elem will 
+        // be using
         new_left_x = offset_x + current_left_x;
         new_right_x = offset_x + current_right_x;
         new_top_y = offset_y + current_top_y;
@@ -30,22 +33,17 @@ function Game() {
         //check the element against the play area boundaries
         if (validateCoord(new_left_x, 'x') != true || validateCoord(new_right_x, 'x') != true) {
             //someone scored
-            // alert('scored');
             if (new_left_x < 0) {
                 scorePoint(player2, 1);
-                // alert('p1 score');
             }
-
             else {
                 scorePoint(player1, 1);
             }
         }
         else if (validateCoord(new_top_y, 'y') != true || validateCoord(new_bot_y, 'y') != true) {
-            //ball hit wall, reverse vertical direction
-            // console.log('hit wall');
-
+            //ball hit a wall so reverse vertical direction
             reverse_y = true;
-            // new_top_y = current_top_y + offset_y;
+
             setBallCoords(ball, new_left_x, new_top_y);
 
         }
@@ -55,12 +53,10 @@ function Game() {
         else if (elem === ball){
             //player1 paddle right side
 
-            //if between player1's height
             // make sure the new_left_x, the balls.css(left) value is both
             // within the x and y axes. It adjusts the size of the bounding box
             // to allow for only portions of the ball to get hit by the paddle
-
-                    //check leftmost point is further than the paddles rightmost point
+            //           check leftmost point is further than the paddles rightmost point
             if(( (new_left_x  < getElemCoord(player1,'x','b')) &&
                         //topmost point of the ball is less than the paddle's bottom point
                         new_top_y < getElemCoord(player1, 'y', 'b') &&
@@ -77,8 +73,8 @@ function Game() {
                 reverse_x = true;
                 setBallCoords(ball, new_left_x, new_top_y);
             }
-            //TODO remove this a loop over the two players instead of repeating
-            //myself
+            //TODO make this a loop over the two players instead of repeating
+            //the similar code
             else if(( new_right_x  > getElemCoord(player2,'x','a') &&
                         new_top_y < getElemCoord(player2, 'y', 'b') &&
                         new_top_y > (getElemCoord(player2, 'y', 'a') - parseInt(ball.css('height')))
@@ -87,16 +83,13 @@ function Game() {
                      new_bot_y > getElemCoord(player2, 'y', 'a') && 
                      (new_bot_y < getElemCoord(player2, 'y', 'b') + parseInt(ball.css('height')))
                     )){
-                // alert('bounce off player2');
                 reverse_x = true;
                 setBallCoords(ball, new_left_x, new_top_y);
             }
 
             else{
-                // alert('else');
                 setBallCoords(ball, new_left_x, new_top_y);
             }
-
         }
 
         else {
@@ -114,7 +107,7 @@ function Game() {
         // console.log(plr);
         // gets the class of the plr object, expecting player1 or player2
         player = plr.get()[0].className
-        player_score[player] += 1;
+            player_score[player] += 1;
 
         //flip the ball's direction around so the scorer doesn't have the
         //advantage
@@ -209,7 +202,9 @@ function Game() {
         score_p1.text(player_score.player1);
         score_p2.text(player_score.player2);
 
-        setTimeout(function () { Update() }, 16);
+        //create a Timeout and add it to the list so we can pause and unpause at
+        //anytime
+        timeouts.push(setTimeout(function () { Update() }, 16));
     };
 
     function KeyHandler(e){
@@ -236,6 +231,27 @@ function Game() {
             alert("ASD");
         }
     };
+
+
+    function pauseGame(e){
+        alert('pauseGame');
+        //foreach timeout in the list, clearTimeout so there's no more pending
+        //updates. essentially pauses the game
+        for (var i = 0; i < timeouts.length; i++) {
+            clearTimeout(timeouts[i]);
+        }
+        //reset to empty
+        timeouts =[]
+    };
+
+    function unpauseGame(e){
+        //don't want to create more than one Update timeout, so I check if
+        //there's at least one in the list already, if so, no need to unpause
+        if (timeouts.length === 0){
+            Update();
+        }
+    };
+
 
     function Start() {
 
@@ -266,25 +282,32 @@ function Game() {
 
         //controls
         player1_keys = { 119 : 'up', //w
-                         115 : 'down'}; //s
+            115 : 'down'}; //s
 
         player2_keys = { 56 : 'up' , //KP_8
-                         53 : 'down'}; //KP_5
+            53 : 'down'}; //KP_5
 
         key_translation = {'up' : -20,
-                           'down' : 20};
+            'down' : 20};
 
         //scoring record
         player_score = {'player1' : 0,
-                        'player2' : 0};
+            'player2' : 0};
 
-        setTimeout(function () { Update() }, 50);
+        timeouts = [];
+        timeouts.push(setTimeout(function () { Update() }, 50));
 
         console.log('done start');
 
-        //associates the function KeyHandler with keypresses
         $("#pong_game").ready(function(){
+
+            //associates the function KeyHandler with keypresses
             $("#pong_game").keypress(KeyHandler);
+    
+            $("#pong_game").focusout(pauseGame);
+            $("#pong_game").click(unpauseGame);
+
+
         });
     }
 
@@ -301,6 +324,7 @@ $(document).ready(function () {
             Game();
             game_started = true;
         }
+
 
     })
 });
