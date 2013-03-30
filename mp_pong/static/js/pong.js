@@ -112,7 +112,16 @@ function Game() {
         //flip the ball's direction around so the scorer doesn't have the
         //advantage
         reverse_x = true;
-    }
+
+
+        //check for scores against the game limit, default 5
+        for (player in player_score){
+            if (player_score[player] >= score_limit){
+                pauseGame(null, false);
+                alert(player +", a Winner is you!");
+                break;
+            }
+    }};
 
     function validateCoord(coord, x_or_y) {
 
@@ -252,8 +261,14 @@ function Game() {
     };
 
 
-    function pauseGame(e){
-        alert('pauseGame');
+    function pauseGame(e, verbose){
+
+        //if the verbose param isn't set, use true
+        verbose =  typeof(verbose) !== 'undefined' ? verbose : true;
+
+        if (verbose === true){
+            alert('pauseGame');
+        };
         //foreach timeout in the list, clearTimeout so there's no more pending
         //updates. essentially pauses the game
         for (var i = 0; i < timeouts.length; i++) {
@@ -283,6 +298,8 @@ function Game() {
 
         ball = $($('.ball')[0]);
 
+        //score limits and score string elements
+        score_limit = 1;
         score_p1 = $($('.score_p1')[0]);
         score_p2 = $($('.score_p2')[0]);
 
@@ -313,8 +330,10 @@ function Game() {
         player_score = {'player1' : 0,
             'player2' : 0};
 
+        //keep track of the timeouts so that we can pause and unpause later
         timeouts = [];
-        timeouts.push(setTimeout(function () { Update() }, 50));
+        //update the game every 50ms. 16.6 is 60fps
+        timeouts.push(setTimeout(function () { Update() }, 32));
 
         console.log('done start');
 
@@ -323,6 +342,8 @@ function Game() {
             //associates the function KeyHandler with keypresses
             $("#pong_game").keypress(KeyHandler);
     
+            //sets up the pause/unpause based on whether or not the game has
+            //focus
             $("#pong_game").focusout(pauseGame);
             $("#pong_game").click(unpauseGame);
 
