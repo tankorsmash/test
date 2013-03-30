@@ -11,27 +11,27 @@ from mp_pong.populateDb import create45DummyMatches
 from collections import OrderedDict
 
 
-
-# Create your views here.
-
 def index(request):
     #check for players in db, if not create some dummy ones, just for showing off leaderboards
     all_players = Player.objects.all()
+    #if there's less than 20 players, seed 20 palyers and 45 new matches
     if len(all_players) < 20:
         create45DummyMatches()
-        msg =  "created 20 new Players, 45 new matches"
+        msg = "created 20 new Players, 45 new matches"
         messages.add_message(request, messages.INFO,msg)
 
+    #whether a POST or other httprequest is being made, if it is a POST request,
+    # validate and save the model, otherwise serve the pong screen
     if request.method == "POST":
         form = PongMatchForm(request.POST)
         if form.is_valid():
             form.save();
+            #TODO this should be a render call instead of the string...
             return HttpResponse("thanks")
     else:
         match_form = PongMatchForm()
         player_form = PlayerForm()
 
-    # return HttpResponse("this is where pong'll get played")
     return render(request, "mp_pong/index.html", {"user_css":"css/pong.css",
                                                   "jquery": "js/jquery-1.9.1.js",
                                                   "pong" : "js/pong.js",
@@ -40,6 +40,7 @@ def index(request):
                                                   "title":'Play Pong!',
                                                   })
 
+#make a post call the /play/add_player to add a player
 def add_player(request):
     if request.method == "POST":
         form = PlayerForm(request.POST)
