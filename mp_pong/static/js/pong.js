@@ -261,26 +261,41 @@ function Game() {
 
     function KeyHandler(e){
 
-        //deal with player1's keys
-        if (e.keyCode in player1_keys ){
-            var current_y = getElemCoord(player1, 'y', 'a');
-            var new_y =  current_y +key_translation[player1_keys[e.keyCode]] ;
-            setPlayerY(player1, new_y);
-        }
-        //and also deal with player2's keys
-        // although since I'm using $.keypress and not $.keydown, which means I
-        // don't have a global variable in place to determine whether or not the 
-        // player is moving or not, only one player can move at once. A pretty
-        // big issue.
-        if (e.keyCode in player2_keys){
-            var current_y = getElemCoord(player2, 'y', 'a');
-            var new_y =  current_y +key_translation[player2_keys[e.keyCode]] ;
-            setPlayerY(player2, new_y);
+        if (game_paused === false){
+            //deal with player1's keys
+            if (e.keyCode in player1_keys ){
+                var current_y = getElemCoord(player1, 'y', 'a');
+                var new_y =  current_y +key_translation[player1_keys[e.keyCode]] ;
+                setPlayerY(player1, new_y);
+            }
+            //and also deal with player2's keys
+            // although since I'm using $.keypress and not $.keydown, which means I
+            // don't have a global variable in place to determine whether or not the 
+            // player is moving or not, only one player can move at once. A pretty
+            // big issue.
+            if (e.keyCode in player2_keys){
+                var current_y = getElemCoord(player2, 'y', 'a');
+                var new_y =  current_y +key_translation[player2_keys[e.keyCode]] ;
+                setPlayerY(player2, new_y);
+            }
         }
     };
 
 
     function pauseGame(e, verbose){
+
+        // alert('pause game loudly');
+
+        //save the old offsets
+        if (game_paused != true){
+            old_x_offset = x_offset;
+            old_y_offset = y_offset;
+        };
+
+        x_offset = 0;
+        y_offset = 0;
+
+        game_paused = true;
 
         //if the verbose param isn't set, use true
         verbose =  typeof(verbose) !== 'undefined' ? verbose : true;
@@ -300,12 +315,17 @@ function Game() {
     };
 
     function unpauseGame(e){
+
+        game_paused = false;
+
         alert('unpause');
         //don't want to create more than one Update timeout, so I check if
         //there's at least one in the list already, if so, no need to unpause
         if (timeouts.length === 0){
             Update();
         }
+
+        console.log('unpause');
     };
 
 
@@ -326,6 +346,7 @@ function Game() {
 
         //game speed, avoid setting higher than 2
         game_speed = 2;
+        game_paused = false;
         x_offset = -3;
         y_offset = 2;
 
@@ -377,9 +398,12 @@ function Game() {
 
 
         });
+
+        console.log('game start');
     }
 
-    Start()
+    Start();
+    console.log('game start post');
 };
 
 
@@ -393,7 +417,7 @@ $(document).ready(function () {
             game_started = true;
         }
         else{
-            alert('not start');
+            alert('game already running');
         };
 
 
