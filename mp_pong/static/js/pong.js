@@ -118,10 +118,22 @@ function Game() {
         for (player in player_score){
             if (player_score[player] >= score_limit){
                 pauseGame(null, false);
-                alert(player +", a Winner is you!");
+
+                //random selection of flavour text
+                alert(player + ", " + randomItemFromList(flavour_win));
                 break;
             }
     }};
+
+
+    //returns a random item from the list
+    function randomItemFromList(a_list){
+
+        rand_index = Math.floor((Math.random()*a_list.length));
+        chosen_string = a_list[rand_index];
+
+        return chosen_string;
+    };
 
     function validateCoord(coord, x_or_y) {
 
@@ -267,7 +279,9 @@ function Game() {
         verbose =  typeof(verbose) !== 'undefined' ? verbose : true;
 
         if (verbose === true){
-            alert('pauseGame');
+            alert_string = randomItemFromList(flavour_pause);
+            // alert('The game is paused, click the unpause');
+            alert(alert_string);
         };
         //foreach timeout in the list, clearTimeout so there's no more pending
         //updates. essentially pauses the game
@@ -332,8 +346,15 @@ function Game() {
 
         //keep track of the timeouts so that we can pause and unpause later
         timeouts = [];
-        //update the game every 50ms. 16.6 is 60fps
+        //              update the game every 50ms. 16.6 is 60fps
         timeouts.push(setTimeout(function () { Update() }, 32));
+
+        //flavour text
+        flavour_win = ['you\'ve won!', 'you did it!', 'you\'re the best!',
+                    'a Winner is you! It\'s a secret to everybody!'];
+        flavour_pause = ['The game is paused', 'Think we can get back to this?',
+                      'Is it because you\'re losing?', 'I\'m ready to win, let\'s go!'];
+
 
         console.log('done start');
 
