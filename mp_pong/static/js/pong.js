@@ -142,6 +142,10 @@ function Game() {
         //random selection of flavour text
         updateMsgBar("GAME OVER: "+ player + ", " + randomItemFromList(flavour_win));
 
+        //reset score to 0
+        player_score.player1 = 0
+        player_score.player2 = 0
+
         // $(document).focus();
         pauseGame(null, false);
 
@@ -387,7 +391,7 @@ function Game() {
             ball = $($('.ball')[0]);
 
             //score limits and score string elements
-            score_limit = 1;
+            score_limit = 3;
             score_p1 = $($('.score_p1')[0]);
             score_p2 = $($('.score_p2')[0]);
 
@@ -471,3 +475,4 @@ function Game() {
 
         })
     });
+
