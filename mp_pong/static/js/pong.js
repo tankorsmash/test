@@ -291,7 +291,9 @@ function Game() {
             if (e.keyCode in player2_keys){
                 var current_y = getElemCoord(player2, 'y', 'a');
                 var new_y =  current_y +key_translation[player2_keys[e.keyCode]] ;
+                if (isValidPaddleY(player2, new_y)){
                 setPlayerY(player2, new_y);
+                };
             }
         }
 
