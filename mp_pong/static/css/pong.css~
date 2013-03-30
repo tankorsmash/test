@@ -12,15 +12,20 @@ h1{
     margin-right:25%;
 }
 
+#msg_bar{
+    text-align:center;
+    margin-bottom: 25px;
+}
+
 .play_area{
     position:relative;
 
     background:black;
 
-    border-bottom-left-radius: 100%30px;
-    border-bottom-right-radius: 100%30px;
-    border-top-left-radius: 100%30px;
-    border-top-right-radius: 100%30px;
+    border-bottom-left-radius: 100%15px;
+    border-bottom-right-radius: 100%15px;
+    border-top-left-radius: 100%15px;
+    border-top-right-radius: 100%15px;
 
     box-shadow: 3px 17px 50px;
 
@@ -62,6 +67,8 @@ h1{
 
 .score_p1{
     position:absolute;
+
+    content: '--';
 
     color:white;
 

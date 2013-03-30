@@ -13,6 +13,10 @@ function Game() {
 
     // };
 
+    function alert(msg){
+        $('#msg_bar').text(msg);
+    };
+
     function setPlayerY(plr, y) {
 
         plr.css('top', y);
@@ -136,7 +140,7 @@ function Game() {
     function gameOver(){
 
         //random selection of flavour text
-        alert(player + ", " + randomItemFromList(flavour_win));
+        alert("GAME OVER: "+ player + ", " + randomItemFromList(flavour_win));
 
         // $(document).focus();
         pauseGame(null, false);
@@ -341,7 +345,7 @@ function Game() {
             if (verbose === true){
                 alert_string = randomItemFromList(flavour_pause);
                 // alert('The game is paused, click the unpause');
-                console.log(alert_string);
+                alert("PAUSED: " + alert_string);
             };
             //foreach timeout in the list, clearTimeout so there's no more pending
             //updates. essentially pauses the game
@@ -368,6 +372,7 @@ function Game() {
             }
 
             console.log('unpause');
+            alert("Game on!");
         };
 
 
@@ -441,7 +446,7 @@ function Game() {
 
             });
 
-            console.log('game start');
+            alert('The game has started!');
         }
 
         Start();

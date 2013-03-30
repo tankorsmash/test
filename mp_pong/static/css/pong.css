@@ -12,6 +12,11 @@ h1{
     margin-right:25%;
 }
 
+#msg_bar{
+    text-align:center;
+    margin-bottom: 25px;
+}
+
 .play_area{
     position:relative;
 
@@ -62,6 +67,7 @@ h1{
 
 .score_p1{
     position:absolute;
+
 
     color:white;
 
