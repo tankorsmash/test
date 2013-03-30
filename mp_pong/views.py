@@ -6,6 +6,7 @@ from django.db.models import Q, F
 
 from mp_pong.models import Player, PongMatch
 from mp_pong.forms import PongMatchForm, PlayerForm
+from mp_pong.populateDb import create45DummyMatches
 
 from collections import OrderedDict
 
@@ -14,6 +15,13 @@ from collections import OrderedDict
 # Create your views here.
 
 def index(request):
+    #check for players in db, if not create some dummy ones, just for showing off leaderboards
+    all_players = Player.objects.all()
+    if len(all_players) < 20:
+        create45DummyMatches()
+        msg =  "created 20 new Players, 45 new matches"
+        messages.add_message(request, messages.INFO,msg)
+
     if request.method == "POST":
         form = PongMatchForm(request.POST)
         if form.is_valid():
@@ -37,9 +45,11 @@ def add_player(request):
         form = PlayerForm(request.POST)
         if form.is_valid():
             form.save();
+            messages.add_message(request, messages.INFO, "Sucessfully added initials!")
             return HttpResponseRedirect("/play/")
         else:
-            messages.add_message(request, messages.INFO, "invalid initials")
+            #TODO: Detect why the validation failed and elaborate in message
+            messages.add_message(request, messages.INFO, "Invalid initials, try again please.")
             return HttpResponseRedirect("/play/")
 
 def leaderboards(request):
@@ -75,7 +85,6 @@ def leaderboards(request):
                 player_to_wins[k] = 0
             if match.get_winner() == k:
                 player_to_wins[k] += 1
-            pass
 
     #similar as before, but this time with the wins
     sorted_by_wins = OrderedDict(sorted(player_to_wins.items(), 
