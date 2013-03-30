@@ -117,14 +117,22 @@ function Game() {
         //check for scores against the game limit, default 5
         for (player in player_score){
             if (player_score[player] >= score_limit){
-                pauseGame(null, false);
-
-                //random selection of flavour text
-                alert(player + ", " + randomItemFromList(flavour_win));
+                gameOver();
                 break;
             }
-    }};
+        }
+    };
 
+
+    function gameOver(){
+
+        pauseGame(null, false);
+        //random selection of flavour text
+        alert(player + ", " + randomItemFromList(flavour_win));
+
+        $(document).focus();
+        pauseGame(null, false);
+    };
 
     //returns a random item from the list
     function randomItemFromList(a_list){
@@ -206,9 +214,6 @@ function Game() {
 
     function Update() {
 
-        // movePlayer(player1, 5);
-
-
         moveElem(ball, x_offset * game_speed, y_offset * game_speed);
         if (reverse_y === true) {
             y_offset *= -1;
@@ -232,7 +237,7 @@ function Game() {
     function updateBallCss(ball){
         //a little flourish on the ball, round the corners of the ball depending
         //on the direction its heading
-        
+
         //reset radius
         ball.css('border-radius', '0px');
 
@@ -249,27 +254,29 @@ function Game() {
         var top_css = 'border-top-'+left_or_right+ '-radius';
         var bottom_css = 'border-bottom-'+left_or_right+ '-radius';
         var ball_radius = '10px'
-        ball.css(top_css, ball_radius);
+            ball.css(top_css, ball_radius);
         ball.css(bottom_css, ball_radius);
 
     };
 
     function KeyHandler(e){
 
+        //deal with player1's keys
         if (e.keyCode in player1_keys ){
-            // alert('player1key');
             var current_y = getElemCoord(player1, 'y', 'a');
             var new_y =  current_y +key_translation[player1_keys[e.keyCode]] ;
             setPlayerY(player1, new_y);
         }
+        //and also deal with player2's keys
+        // although since I'm using $.keypress and not $.keydown, which means I
+        // don't have a global variable in place to determine whether or not the 
+        // player is moving or not, only one player can move at once. A pretty
+        // big issue.
         if (e.keyCode in player2_keys){
             var current_y = getElemCoord(player2, 'y', 'a');
             var new_y =  current_y +key_translation[player2_keys[e.keyCode]] ;
             setPlayerY(player2, new_y);
         }
-        // else {
-        //     alert("ASD");
-        // }
     };
 
 
@@ -293,6 +300,7 @@ function Game() {
     };
 
     function unpauseGame(e){
+        alert('unpause');
         //don't want to create more than one Update timeout, so I check if
         //there's at least one in the list already, if so, no need to unpause
         if (timeouts.length === 0){
@@ -305,11 +313,10 @@ function Game() {
 
         // console.log($(this));
 
-        //represents the player objects 
+        //represents the player and ball objects 
         //TODO: insert via jquery.after() instead of hardcode
         player1 = $($('.player1')[0]);
         player2 = $($('.player2')[0]);
-
         ball = $($('.ball')[0]);
 
         //score limits and score string elements
@@ -326,6 +333,7 @@ function Game() {
         limit_x = parseInt($($('.play_area')[0]).css('width'));
         limit_y = parseInt($($('.play_area')[0]).css('height'));
 
+        //whether the ball's trajectory  needs to be reversed, ie wall/paddle collision
         reverse_x = false;
         reverse_y = false;
 
@@ -341,8 +349,7 @@ function Game() {
             'down' : 20};
 
         //scoring record
-        player_score = {'player1' : 0,
-            'player2' : 0};
+        player_score = {'player1' : 0, 'player2' : 0};
 
         //keep track of the timeouts so that we can pause and unpause later
         timeouts = [];
@@ -356,13 +363,13 @@ function Game() {
                       'Is it because you\'re losing?', 'I\'m ready to win, let\'s go!'];
 
 
-        console.log('done start');
+        // console.log('done start');
 
         $("#pong_game").ready(function(){
 
             //associates the function KeyHandler with keypresses
             $("#pong_game").keypress(KeyHandler);
-    
+
             //sets up the pause/unpause based on whether or not the game has
             //focus
             $("#pong_game").focusout(pauseGame);
@@ -385,6 +392,9 @@ $(document).ready(function () {
             Game();
             game_started = true;
         }
+        else{
+            alert('not start');
+        };
 
 
     })
